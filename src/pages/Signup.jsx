@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-const handleSignup = () => {
-  navigate("/login");
-};
+
 function Signup() {
+  const navigate = useNavigate(); //used to navigate to the login page after signup
+  const handleSignup = () => {  //runs when the signup button is clicked
+    navigate("/login"); //navigates to the login page after signup
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white p-8 rounded-xl shadow-lg w-96">
@@ -33,10 +35,6 @@ function Signup() {
           placeholder="Confirm Password"
           className="w-full border border-gray-300 rounded-lg p-3 mb-6"
         />
-
-        {/* <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">
-          Sign Up
-        </button> */}
         <button
   onClick={handleSignup}
   className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700"

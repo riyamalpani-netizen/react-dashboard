@@ -125,7 +125,7 @@
 // }
 
 // export default App
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"; //dependencies for routing in react. BrowserRouter is used to wrap the entire application and provide routing functionality. Routes is used to define the different routes in the application. Route is used to define a specific route and its corresponding component. Navigate is used to redirect the user to a different route.
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";

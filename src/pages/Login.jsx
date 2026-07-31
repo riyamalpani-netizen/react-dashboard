@@ -1,6 +1,6 @@
 
 import { useNavigate, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState } from "react";  //used to store and update the email and the password.
 const handleLogin = () => {
   navigate("/dashboard");
 };
@@ -54,8 +54,8 @@ const handleLogin = () => {
 
         <p className="text-center mt-4">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-blue-600 font-semibold">
-    Sign Up
+          <Link to="/signup" className="text-blue-600 font-semibold">   
+          sign up
   </Link>
         </p>
         
