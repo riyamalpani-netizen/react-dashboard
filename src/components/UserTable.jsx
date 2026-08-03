@@ -1,15 +1,23 @@
 import { useState } from "react";
+import Button from "./Button";
+import InputField from "./InputField";
 
 function UserTable({ users, theme, onAddUser, onDeleteUser }) {
+  // Check whether the current theme is dark so the component can switch styles.
   const isDark = theme === "dark";
+  // Controls whether the add-user modal is visible.
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Stores the form input values for the new user.
   const [formData, setFormData] = useState({ name: "", email: "" });
+  // Applies a theme class so global CSS can style light and dark modes separately.
   const themeClass = isDark ? "dark" : "light";
 
+  // Clears the form after a user is added or cancelled.
   const resetForm = () => {
     setFormData({ name: "", email: "" });
   };
 
+  // Sends the entered name and email to the parent component and closes the modal.
   const handleSubmit = (e) => {
     e.preventDefault();
     onAddUser(formData.name, formData.email);
@@ -18,84 +26,78 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
   };
 
   return (
+    // Main card container for the user list and its actions.
     <div className={`user-table ${themeClass}`}>
-      <div className="user-table__header">
-        <h2 className="user-table__title">Users</h2>
-        <button
-          type="button"
-          onClick={() => setIsModalOpen(true)}
-          className="user-table__button user-table__button--primary"
-        >
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h2 className="text-xl font-bold">Users</h2>
+        <Button variant="primary" onClick={() => setIsModalOpen(true)}>
           Add User
-        </button>
+        </Button>
       </div>
 
+      {/* Show the modal only when the user clicks Add User. */}
       {isModalOpen && (
-        <div className="user-table__modal-backdrop">
-          <div className="user-table__modal">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 text-slate-900 shadow-xl dark:bg-slate-900 dark:text-slate-100">
             <h3 className="mb-4 text-lg font-semibold">Add New User</h3>
-            <form onSubmit={handleSubmit} className="user-table__form">
-              <input
-                type="text"
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <InputField
+                id="name"
+                label="Name"
                 placeholder="Name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="user-table__input"
               />
-              <input
+              <InputField
+                id="email"
+                label="Email"
                 type="email"
                 placeholder="Email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="user-table__input"
               />
-              <div className="user-table__actions">
-                <button
+              <div className="flex justify-end gap-3">
+                <Button
+                  variant="secondary"
                   type="button"
                   onClick={() => {
                     resetForm();
                     setIsModalOpen(false);
                   }}
-                  className="user-table__button user-table__button--secondary"
                 >
                   Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="user-table__button user-table__button--primary"
-                >
+                </Button>
+                <Button type="submit" variant="primary">
                   Add
-                </button>
+                </Button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      <table className="user-table__table">
+      {/* Render the list of users in a table layout. */}
+      <table className="w-full border border-slate-700">
         <thead>
-          <tr className="user-table__thead-row">
-            <th className="user-table__cell">ID</th>
-            <th className="user-table__cell">Name</th>
-            <th className="user-table__cell">Email</th>
-            <th className="user-table__cell">Action</th>
+          <tr className="bg-gray-200 dark:bg-slate-800">
+            <th className="border p-2">ID</th>
+            <th className="border p-2">Name</th>
+            <th className="border p-2">Email</th>
+            <th className="border p-2">Action</th>
           </tr>
         </thead>
 
         <tbody>
+          {/* Display each user row and give each one a serial number. */}
           {users.map((user, index) => (
-            <tr key={user.id} className="user-table__row">
-              <td className="user-table__cell">{index + 1}</td>
-              <td className="user-table__cell">{user.name}</td>
-              <td className="user-table__cell">{user.email}</td>
-              <td className="user-table__cell">
-                <button
-                  type="button"
-                  onClick={() => onDeleteUser(user.id)}
-                  className="user-table__button user-table__button--danger"
-                >
+            <tr key={user.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-900 dark:even:bg-slate-800">
+              <td className="border p-2">{index + 1}</td>
+              <td className="border p-2">{user.name}</td>
+              <td className="border p-2">{user.email}</td>
+              <td className="border p-2">
+                <Button variant="danger" onClick={() => onDeleteUser(user.id)}>
                   Delete
-                </button>
+                </Button>
               </td>
             </tr>
           ))}
