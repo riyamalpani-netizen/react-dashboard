@@ -49,6 +49,39 @@ function Signup() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="w-full border border-gray-300 rounded-lg p-3 mb-6"
         />
+        {/* added few radio button below */}
+        <div className="mb-4">
+       <label className="block font-semibold mb-2">
+         Gender
+       </label>
+
+       <label className="mr-4">
+       <input type="radio" name="gender" value="Male" />
+       Male
+      </label>
+
+      <label className="mr-4">
+     <input type="radio" name="gender" value="Female" />
+     Female
+     </label>
+
+    <label>
+    <input type="radio" name="gender" value="Other" />
+    Other
+   </label>
+</div>
+<select className="w-full border border-gray-300 rounded-lg p-3 mb-4">
+  <option value="">Select Role</option>
+  <option value="Admin">Admin</option>
+  <option value="User">User</option>
+  <option value="Manager">Manager</option>
+</select>
+<div className="mb-6">
+  <label>
+    <input type="checkbox" className="mr-2" />
+    I accept the Terms & Conditions
+  </label>
+</div>
         <button
   onClick={handleSignup}
   className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700"
