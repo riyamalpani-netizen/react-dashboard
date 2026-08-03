@@ -1,10 +1,4 @@
-function UserTable() {
-  const users = [
-    { id: 1, name: "Riya", email: "riya@gmail.com" },
-    { id: 2, name: "Shruti", email: "shruti@gmail.com" },
-    { id: 3, name: "Aditya", email: "aditya@gmail.com" },
-  ];
-
+function UserTable({users}) { 
   return (
     <div className="bg-white rounded-lg shadow p-5">
       <h2 className="text-xl font-bold mb-4">Users</h2>

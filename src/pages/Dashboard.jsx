@@ -16,6 +16,10 @@ function Dashboard() {
     { id: 2, name: "Shruti", email: "shruti@gmail.com" },
     { id: 3, name: "Aditya", email: "aditya@gmail.com" },
   ]);
+  const [search, setSearch] = useState(""); 
+  const filteredUsers = users.filter((user) =>
+  user.name.toLowerCase().includes(search.toLowerCase())
+); //added to filter the users.
 
  
   useEffect(() => {
@@ -30,7 +34,15 @@ function Dashboard() {
 
         <div className="flex-1 p-6 bg-gray-100 min-h-screen">
           <DashboardCards cards={cards} />
-          <UserTable users={users} />
+          <input
+           type="text"
+           placeholder="Search User..."
+           value={search}
+           onChange={(e) => setSearch(e.target.value)}
+           className="w-full md:w-80 border rounded-lg p-3 mb-4"
+           />
+           <UserTable users={filteredUsers} />
+          {/* <UserTable users={users} /> */}
         </div>
       </div>
     </>
