@@ -24,6 +24,25 @@ function Dashboard() {
     user.name.toLowerCase().includes(search.toLowerCase())
   ); //added to filter the users.
 
+  const addUser = (name, email) => {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+
+    if (!trimmedName || !trimmedEmail) return;
+
+    const newUser = {
+      id: Date.now(),
+      name: trimmedName,
+      email: trimmedEmail,
+    };
+
+    setUsers((prevUsers) => [newUser, ...prevUsers]);
+  };
+
+  const deleteUser = (id) => {
+    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+  };
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
@@ -47,7 +66,7 @@ function Dashboard() {
            onChange={(e) => setSearch(e.target.value)}
            className={`w-full md:w-80 border rounded-lg p-3 mb-4 transition ${isDark ? "bg-slate-900 border-slate-700 text-slate-100 placeholder-slate-500" : "bg-white border-gray-300 text-slate-900 placeholder-gray-500"}`}
            />
-           <UserTable users={filteredUsers} theme={theme} />
+           <UserTable users={filteredUsers} theme={theme} onAddUser={addUser} onDeleteUser={deleteUser} />
           {/* <UserTable users={users} /> */}
         </div>
       </div>
