@@ -29,7 +29,9 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
     // Main card container for the user list and its actions.
     <div className={`user-table ${themeClass}`}>
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="text-xl font-bold">Users</h2>
+        <h2 className={`text-xl font-bold ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+          Users
+        </h2>
         <Button variant="primary" onClick={() => setIsModalOpen(true)}>
           Add User
         </Button>
@@ -77,24 +79,27 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
       )}
 
       {/* Render the list of users in a table layout. */}
-      <table className="w-full border border-slate-700">
+      <table className={`w-full border ${isDark ? "border-slate-600" : "border-slate-300"} text-left ${isDark ? "text-slate-100" : "text-slate-900"}`}>
         <thead>
-          <tr className="bg-gray-200 dark:bg-slate-800">
-            <th className="border p-2">ID</th>
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Action</th>
+          <tr className={isDark ? "bg-slate-800 text-slate-100" : "bg-gray-200 text-slate-900"}>
+            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>ID</th>
+            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>Name</th>
+            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>Email</th>
+            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>Action</th>
           </tr>
         </thead>
 
         <tbody>
           {/* Display each user row and give each one a serial number. */}
           {users.map((user, index) => (
-            <tr key={user.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-900 dark:even:bg-slate-800">
-              <td className="border p-2">{index + 1}</td>
-              <td className="border p-2">{user.name}</td>
-              <td className="border p-2">{user.email}</td>
-              <td className="border p-2">
+            <tr
+              key={user.id}
+              className={isDark ? "bg-slate-900 text-slate-100" : "bg-white text-slate-900"}
+            >
+              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>{index + 1}</td>
+              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>{user.name}</td>
+              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>{user.email}</td>
+              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>
                 <Button variant="danger" onClick={() => onDeleteUser(user.id)}>
                   Delete
                 </Button>
