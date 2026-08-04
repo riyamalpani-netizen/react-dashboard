@@ -24,6 +24,9 @@ function Dashboard() {
     user.name.toLowerCase().includes(search.toLowerCase())
   ); //added to filter the users.
 
+  // Count of all users in state, updated when a user is added or deleted.
+  const userCount = users.length;
+
   const addUser = (name, email) => {
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
@@ -47,6 +50,24 @@ function Dashboard() {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
+  // Load saved theme from localStorage only once when the dashboard mounts.
+  // This ensures the theme persists across browser refreshes.
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  // Persist the current theme to localStorage and toggle the global dark class.
+  // Runs whenever `theme` changes so UI and storage stay in sync.
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    document.documentElement.classList.toggle("dark", isDark);
+  }, [theme, isDark]);
+
+  // verifying the dashboard loaded.
+  // Removed strick mode from index.js to avoid double console logs
   useEffect(() => {
     console.log("Dashboard Loaded Successfully");
   }, []);
@@ -54,20 +75,26 @@ function Dashboard() {
     <>
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
-      <div className={`flex min-h-screen ${isDark ? "bg-slate-950 text-slate-100" : "bg-gray-100 text-slate-900"}`}>
+      <div className="dashboard-shell">
         <Sidebar theme={theme} />
 
-        <div className="flex-1 p-6 min-h-screen">
+        <div className="dashboard-main-content">
           <DashboardCards cards={cards} theme={theme} />
-          <input
-           type="text"
-           placeholder="Search User..."
-           value={search}
-           onChange={(e) => setSearch(e.target.value)}
-           className={`w-full md:w-80 border rounded-lg p-3 mb-4 transition ${isDark ? "bg-slate-900 border-slate-700 text-slate-100 placeholder-slate-500" : "bg-white border-gray-300 text-slate-900 placeholder-gray-500"}`}
-           />
-           <UserTable users={filteredUsers} theme={theme} onAddUser={addUser} onDeleteUser={deleteUser} />
-          {/* <UserTable users={users} /> */}
+          <div className="dashboard-toolbar mb-4">
+            <div className="dashboard-toolbar-inner">
+              <input
+                type="text"
+                placeholder="Search User..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="dashboard-search-input"
+              />
+              <div className="dashboard-user-count">
+                User count: <span className="dashboard-count-value">{userCount}</span>
+              </div>
+            </div>
+          </div>
+          <UserTable users={filteredUsers} theme={theme} onAddUser={addUser} onDeleteUser={deleteUser} />
         </div>
       </div>
     </>

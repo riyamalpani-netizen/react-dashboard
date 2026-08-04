@@ -1,11 +1,8 @@
 function InputField({ label, id, type = "text", value, onChange, placeholder, className = "", ...props }) {
-  const baseClasses =
-    "w-full rounded border px-3 py-2 bg-white border-gray-300 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500";
-
   return (
-    <div className="space-y-1">
+    <div className="input-field">
       {label ? (
-        <label htmlFor={id} className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor={id} className="input-label">
           {label}
         </label>
       ) : null}
@@ -15,7 +12,7 @@ function InputField({ label, id, type = "text", value, onChange, placeholder, cl
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={[baseClasses, className].filter(Boolean).join(" ")}
+        className={["input-input", className].filter(Boolean).join(" ")}
         {...props}
       />
     </div>

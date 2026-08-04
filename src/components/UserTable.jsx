@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "./Button";
 import InputField from "./InputField";
 
 function UserTable({ users, theme, onAddUser, onDeleteUser }) {
-  // Check whether the current theme is dark so the component can switch styles.
   const isDark = theme === "dark";
-  // Controls whether the add-user modal is visible.
+  //  the below is looking wether the add use modal is visibble
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Stores the form input values for the new user.
   const [formData, setFormData] = useState({ name: "", email: "" });
-  // Applies a theme class so global CSS can style light and dark modes separately.
+
+  // Close the modal and reset the form when the modal is closed.
+  useEffect(() => {
+    if (!isModalOpen) {
+      resetForm();
+    }
+  }, [isModalOpen]);
+
   const themeClass = isDark ? "dark" : "light";
 
   // Clears the form after a user is added or cancelled.
@@ -17,7 +23,7 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
     setFormData({ name: "", email: "" });
   };
 
-  // Sends the entered name and email to the parent component and closes the modal.
+  // it is sending the entered name and email to the parent component and then closes the modal.
   const handleSubmit = (e) => {
     e.preventDefault();
     onAddUser(formData.name, formData.email);
@@ -26,12 +32,9 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
   };
 
   return (
-    // Main card container for the user list and its actions.
     <div className={`user-table ${themeClass}`}>
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className={`text-xl font-bold ${isDark ? "text-slate-100" : "text-slate-900"}`}>
-          Users
-        </h2>
+      <div className="user-table-header">
+        <h2 className="user-table-title">Users</h2>
         <Button variant="primary" onClick={() => setIsModalOpen(true)}>
           Add User
         </Button>
@@ -39,10 +42,10 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
 
       {/* Show the modal only when the user clicks Add User. */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 text-slate-900 shadow-xl dark:bg-slate-900 dark:text-slate-100">
-            <h3 className="mb-4 text-lg font-semibold">Add New User</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="modal-backdrop">
+          <div className="modal-dialog">
+            <h3 className="modal-title">Add New User</h3>
+            <form onSubmit={handleSubmit} className="modal-form">
               <InputField
                 id="name"
                 label="Name"
@@ -58,7 +61,7 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              <div className="flex justify-end gap-3">
+              <div className="modal-actions">
                 <Button
                   variant="secondary"
                   type="button"
@@ -79,27 +82,24 @@ function UserTable({ users, theme, onAddUser, onDeleteUser }) {
       )}
 
       {/* Render the list of users in a table layout. */}
-      <table className={`w-full border ${isDark ? "border-slate-600" : "border-slate-300"} text-left ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+      <table className="user-table-table">
         <thead>
-          <tr className={isDark ? "bg-slate-800 text-slate-100" : "bg-gray-200 text-slate-900"}>
-            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>ID</th>
-            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>Name</th>
-            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>Email</th>
-            <th className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>Action</th>
+          <tr>
+            <th className="user-table-heading">ID</th>
+            <th className="user-table-heading">Name</th>
+            <th className="user-table-heading">Email</th>
+            <th className="user-table-heading">Action</th>
           </tr>
         </thead>
 
         <tbody>
           {/* Display each user row and give each one a serial number. */}
           {users.map((user, index) => (
-            <tr
-              key={user.id}
-              className={isDark ? "bg-slate-900 text-slate-100" : "bg-white text-slate-900"}
-            >
-              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>{index + 1}</td>
-              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>{user.name}</td>
-              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>{user.email}</td>
-              <td className={`border ${isDark ? "border-slate-600" : "border-slate-300"} p-2`}>
+            <tr key={user.id} className="user-table-row">
+              <td className="user-table-cell">{index + 1}</td>
+              <td className="user-table-cell">{user.name}</td>
+              <td className="user-table-cell">{user.email}</td>
+              <td className="user-table-cell">
                 <Button variant="danger" onClick={() => onDeleteUser(user.id)}>
                   Delete
                 </Button>
