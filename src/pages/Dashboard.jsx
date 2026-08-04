@@ -24,9 +24,6 @@ function Dashboard() {
     user.name.toLowerCase().includes(search.toLowerCase())
   ); //added to filter the users.
 
-  // Count of all users in state, updated when a user is added or deleted.
-  const userCount = users.length;
-
   const addUser = (name, email) => {
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
@@ -89,9 +86,6 @@ function Dashboard() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="dashboard-search-input"
               />
-              <div className="dashboard-user-count">
-                User count: <span className="dashboard-count-value">{userCount}</span>
-              </div>
             </div>
           </div>
           <UserTable users={filteredUsers} theme={theme} onAddUser={addUser} onDeleteUser={deleteUser} />
